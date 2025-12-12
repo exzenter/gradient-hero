@@ -1,0 +1,177 @@
+/**
+ * Hero Gradient Block Styles
+ * Applied both in editor and frontend
+ */
+
+.wp-block-hero-gradient {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	width: 100%;
+	box-sizing: border-box;
+
+	// Full-width alignment support
+	&.alignwide,
+	&.alignfull {
+		width: 100%;
+	}
+
+	&.alignfull {
+		margin-left: calc(-50vw + 50%);
+		margin-right: calc(-50vw + 50%);
+		max-width: 100vw;
+		width: 100vw;
+	}
+}
+
+.hero-gradient__background {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: -99999;
+	overflow: hidden;
+	// Prevent WordPress layout max-width from affecting these elements
+	max-width: none !important;
+	width: auto !important;
+	margin: 0 !important;
+}
+
+.hero-gradient__canvas {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+	// Prevent WordPress layout max-width inheritance
+	max-width: none !important;
+	margin: 0 !important;
+}
+
+.hero-gradient__svg-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	pointer-events: none;
+	z-index: -99998;
+	// Prevent WordPress layout max-width inheritance
+	max-width: none !important;
+	width: auto !important;
+	margin: 0 !important;
+
+	svg {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		max-width: none !important;
+	}
+}
+
+// Extended blocks gradient background (for Group, Columns, etc.)
+.hero-gradient-extension__background {
+	position: absolute !important;
+	inset: 0 !important;
+	z-index: -99999 !important;
+	overflow: hidden !important;
+	pointer-events: none !important;
+	max-width: none !important;
+	width: auto !important;
+	margin: 0 !important;
+	padding: 0 !important;
+
+	.hero-gradient__canvas,
+	.hero-gradient__svg-overlay {
+		max-width: none !important;
+		width: 100% !important;
+		margin: 0 !important;
+		padding: 0 !important;
+	}
+}
+
+// Blocks with gradient extension need relative positioning
+.has-hero-gradient {
+	position: relative;
+	overflow: hidden;
+}
+
+.hero-gradient__content {
+	position: relative;
+	z-index: 100;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	width: 100%;
+	min-height: inherit;
+	padding: 2rem;
+	box-sizing: border-box;
+
+	// Content defaults
+	color: #ffffff;
+
+	// Ensure all content is centered by default
+	>* {
+		max-width: 1200px;
+		margin-left: auto;
+		margin-right: auto;
+		width: 100%;
+	}
+
+	// Reset margins on first/last children
+	>*:first-child {
+		margin-top: 0;
+	}
+
+	>*:last-child {
+		margin-bottom: 0;
+	}
+
+	// Headings styling
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: inherit;
+	}
+
+	// Paragraphs
+	p {
+		color: inherit;
+	}
+
+	// Links
+	a {
+		color: inherit;
+		text-decoration: underline;
+
+		&:hover {
+			text-decoration: none;
+		}
+	}
+
+	// Buttons
+	.wp-block-button__link {
+		color: inherit;
+	}
+}
+
+// Responsive adjustments
+@media (max-width: 782px) {
+	.hero-gradient__content {
+		padding: 1.5rem;
+	}
+}
+
+@media (max-width: 480px) {
+	.hero-gradient__content {
+		padding: 1rem;
+	}
+}

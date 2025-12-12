@@ -1,0 +1,30 @@
+{
+	"name": "hero-gradient",
+	"version": "0.1.0",
+	"description": "Animated gradient background block with nested content support",
+	"author": "The WordPress Contributors",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build --blocks-manifest",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start --blocks-manifest"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.28.5",
+		"@babel/preset-react": "^7.28.5",
+		"@wordpress/scripts": "^31.1.0",
+		"babel-loader": "^10.0.0",
+		"copy-webpack-plugin": "^13.0.1",
+		"css-loader": "^7.1.2",
+		"mini-css-extract-plugin": "^2.9.4",
+		"sass": "^1.96.0",
+		"sass-loader": "^16.0.6",
+		"webpack": "^5.103.0",
+		"webpack-cli": "^6.0.1"
+	}
+}

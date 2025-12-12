@@ -1,0 +1,252 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "hero-gradient/hero-gradient",
+  "version": "0.1.0",
+  "title": "Hero Gradient",
+  "category": "design",
+  "icon": "art",
+  "description": "Animated gradient background block with nested content support",
+  "keywords": [
+    "gradient",
+    "hero",
+    "animation",
+    "background",
+    "canvas"
+  ],
+  "supports": {
+    "html": false,
+    "align": [
+      "wide",
+      "full"
+    ],
+    "anchor": true,
+    "className": true,
+    "layout": {
+      "default": {
+        "type": "constrained"
+      },
+      "allowSwitching": true,
+      "allowEditing": true,
+      "allowInheriting": true,
+      "allowVerticalAlignment": true,
+      "allowJustification": true,
+      "allowOrientation": true
+    },
+    "dimensions": {
+      "minHeight": true,
+      "aspectRatio": true
+    },
+    "position": {
+      "sticky": true
+    },
+    "spacing": {
+      "padding": true,
+      "margin": [
+        "top",
+        "bottom"
+      ],
+      "blockGap": true
+    }
+  },
+  "attributes": {
+    "maxHeight": {
+      "type": "string",
+      "default": ""
+    },
+    "maxWidth": {
+      "type": "string",
+      "default": ""
+    },
+    "radialGradientsEnabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "gradientOpacity": {
+      "type": "number",
+      "default": 100
+    },
+    "gradientBlur": {
+      "type": "number",
+      "default": 0
+    },
+    "brightness": {
+      "type": "number",
+      "default": 100
+    },
+    "contrast": {
+      "type": "number",
+      "default": 100
+    },
+    "saturation": {
+      "type": "number",
+      "default": 100
+    },
+    "hueRotation": {
+      "type": "number",
+      "default": 0
+    },
+    "gradientScale": {
+      "type": "number",
+      "default": 100
+    },
+    "gradientSize": {
+      "type": "number",
+      "default": 100
+    },
+    "gradientSizeMode": {
+      "type": "string",
+      "default": "base"
+    },
+    "positionX": {
+      "type": "number",
+      "default": 50
+    },
+    "positionY": {
+      "type": "number",
+      "default": 50
+    },
+    "blendMode": {
+      "type": "string",
+      "default": "normal"
+    },
+    "gradientBlendModeEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "gradientBlendMode": {
+      "type": "string",
+      "default": "normal"
+    },
+    "fadeoutMode": {
+      "type": "string",
+      "default": "none"
+    },
+    "fadeoutTime": {
+      "type": "number",
+      "default": 10
+    },
+    "gradientCount": {
+      "type": "number",
+      "default": 5
+    },
+    "animationSpeed": {
+      "type": "number",
+      "default": 50
+    },
+    "gradientFade": {
+      "type": "number",
+      "default": 0
+    },
+    "canvasBgColor": {
+      "type": "string",
+      "default": "#000000"
+    },
+    "colorMode": {
+      "type": "string",
+      "default": "hue-range"
+    },
+    "hueStart": {
+      "type": "number",
+      "default": 200
+    },
+    "hueEnd": {
+      "type": "number",
+      "default": 280
+    },
+    "evenlySpacedColors": {
+      "type": "boolean",
+      "default": true
+    },
+    "hueSeparation": {
+      "type": "number",
+      "default": 100
+    },
+    "saturationMin": {
+      "type": "number",
+      "default": 60
+    },
+    "saturationMax": {
+      "type": "number",
+      "default": 100
+    },
+    "lightnessMin": {
+      "type": "number",
+      "default": 20
+    },
+    "lightnessMax": {
+      "type": "number",
+      "default": 50
+    },
+    "paletteColor1": {
+      "type": "string",
+      "default": "#4a90e2"
+    },
+    "paletteColor2": {
+      "type": "string",
+      "default": "#5ba3f5"
+    },
+    "paletteColor3": {
+      "type": "string",
+      "default": "#6bb6ff"
+    },
+    "paletteColor4": {
+      "type": "string",
+      "default": "#7bc9ff"
+    },
+    "paletteColor5": {
+      "type": "string",
+      "default": "#8bdaff"
+    },
+    "lineGradientsEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "lineGradientAngle": {
+      "type": "number",
+      "default": 0
+    },
+    "lineGradientLength": {
+      "type": "number",
+      "default": 200
+    },
+    "lineGradientWidth": {
+      "type": "number",
+      "default": 100
+    },
+    "svgEnabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "svgOpacity": {
+      "type": "number",
+      "default": 15
+    },
+    "svgSize": {
+      "type": "number",
+      "default": 100
+    },
+    "svgStrokeWidth": {
+      "type": "number",
+      "default": 1
+    },
+    "svgPattern": {
+      "type": "string",
+      "default": "grid"
+    },
+    "svgColor": {
+      "type": "string",
+      "default": "#ffffff"
+    },
+    "svgBlendMode": {
+      "type": "string",
+      "default": "normal"
+    }
+  },
+  "textdomain": "hero-gradient",
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "viewScript": "file:./view.js",
+  "render": "file:./render.php"
+}
