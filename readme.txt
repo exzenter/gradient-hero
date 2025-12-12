@@ -1,55 +1,65 @@
 === Hero Gradient ===
-Contributors:      The WordPress Contributors
-Tags:              block
-Tested up to:      6.7
+Contributors:      exzentde
+Tags:              gradient, animation, background, hero, block
+Tested up to:      6.9
 Stable tag:        0.1.0
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
-Animated gradient background block with nested content support
+Beautiful animated gradient backgrounds for your WordPress blocks with full customization and nested content support.
 
 == Description ==
 
-This is the long description. No limit, and you can use Markdown (as well as in the following sections).
+**Hero Gradient** adds stunning animated gradient backgrounds to your WordPress site. Create eye-catching hero sections, headers, and content areas with smooth color transitions and optional SVG grid overlays.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+= Features =
+
+* Animated gradient backgrounds with customizable colors
+* Configurable animation speed and direction
+* SVG grid overlay patterns
+* Full block editor integration
+* Nested content support (add any blocks inside)
+* Responsive design
+
+= Block Editor Support =
+
+Works seamlessly with the WordPress block editor (Gutenberg). Simply add the Hero Gradient block and customize colors, animation speed, and overlay patterns directly in the editor.
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload the plugin files to the `/wp-content/plugins/hero-gradient` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-
+1. Upload the `hero-gradient` folder to the `/wp-content/plugins/` directory
+2. Activate the plugin through the 'Plugins' menu in WordPress
+3. In the block editor, search for "Hero Gradient" and add it to your page
 
 == Frequently Asked Questions ==
 
-= A question that someone might have =
+= Can I add content inside the gradient block? =
 
-An answer to that question.
+Yes! Hero Gradient supports nested content. Add headings, paragraphs, buttons, or any other blocks inside.
 
-= What about foo bar? =
+= Does it work with Full Site Editing? =
 
-Answer to foo bar dilemma.
+Yes, Hero Gradient is fully compatible with WordPress Full Site Editing and block themes.
+
+= Can I customize the animation speed? =
+
+Yes, animation speed, colors, and direction are all customizable through the block settings panel.
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Hero Gradient block in the editor
+2. Animated gradient with SVG grid overlay
+3. Block settings panel
 
 == Changelog ==
 
 = 0.1.0 =
-* Release
+* Initial release
+* Animated gradient backgrounds
+* SVG grid overlay support
+* Nested content support
 
-== Arbitrary section ==
+== Upgrade Notice ==
 
-You may provide arbitrary sections, in the same format as the ones above. This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation." Arbitrary sections will be shown below the built-in sections outlined above.
+= 0.1.0 =
+Initial release of Hero Gradient.

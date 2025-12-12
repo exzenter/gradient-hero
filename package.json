@@ -2,7 +2,7 @@
 	"name": "hero-gradient",
 	"version": "0.1.0",
 	"description": "Animated gradient background block with nested content support",
-	"author": "The WordPress Contributors",
+	"author": "Exzent.de",
 	"license": "GPL-2.0-or-later",
 	"main": "build/index.js",
 	"scripts": {
