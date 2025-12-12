@@ -283,6 +283,8 @@ export class GradientAnimation {
 
             tempCtx.globalCompositeOperation = this.settings.gradientBlendMode;
         } else {
+            // Clear canvas first to support transparent backgrounds
+            this.ctx.clearRect(0, 0, width, height);
             this.ctx.globalCompositeOperation = 'source-over';
             this.ctx.fillStyle = this.settings.backgroundColor;
             this.ctx.fillRect(0, 0, width, height);
@@ -364,6 +366,8 @@ export class GradientAnimation {
 
         if (this.settings.gradientBlendModeEnabled) {
             tempCtx.filter = 'none';
+            // Clear canvas first to support transparent backgrounds
+            this.ctx.clearRect(0, 0, width, height);
             this.ctx.globalCompositeOperation = 'source-over';
             this.ctx.fillStyle = this.settings.backgroundColor;
             this.ctx.fillRect(0, 0, width, height);

@@ -2,7 +2,7 @@
 Contributors:      exzentde
 Tags:              gradient, animation, background, hero, block
 Tested up to:      6.9
-Stable tag:        0.1.0
+Stable tag:        0.1.1
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,6 +52,10 @@ Yes, animation speed, colors, and direction are all customizable through the blo
 3. Block settings panel
 
 == Changelog ==
+
+= 0.1.1 =
+* Added alpha/transparency support for Canvas Background Color
+* Fixed transparent backgrounds appearing black
 
 = 0.1.0 =
 * Initial release

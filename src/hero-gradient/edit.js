@@ -93,7 +93,7 @@ function ColorPickerControl({ label, color, onChange }) {
 								<ColorPicker
 									color={color}
 									onChange={onChange}
-									enableAlpha={false}
+									enableAlpha={true}
 								/>
 							</div>
 						</Popover>
