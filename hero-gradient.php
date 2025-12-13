@@ -2,7 +2,7 @@
 /**
  * Plugin Name:       Hero Gradient
  * Description:       Animated gradient background block with nested content support
- * Version:           0.1.1
+ * Version:           0.1.2
  * Requires at least: 6.7
  * Requires PHP:      7.4
  * Author:            Exzent.de

@@ -1,6 +1,6 @@
 {
 	"name": "hero-gradient",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"description": "Animated gradient background block with nested content support",
 	"author": "Exzent.de",
 	"license": "GPL-2.0-or-later",

@@ -271,14 +271,7 @@ export default function Edit({ attributes, setAttributes }) {
 						checked={radialGradientsEnabled}
 						onChange={(value) => setAttributes({ radialGradientsEnabled: value })}
 					/>
-					<RangeControl
-						label={__('Gradient Opacity', 'hero-gradient')}
-						value={gradientOpacity}
-						onChange={(value) => setAttributes({ gradientOpacity: value })}
-						min={0}
-						max={100}
-						step={1}
-					/>
+
 					<RangeControl
 						label={__('Blur', 'hero-gradient')}
 						value={gradientBlur}
@@ -421,8 +414,8 @@ export default function Edit({ attributes, setAttributes }) {
 						value={gradientFade}
 						onChange={(value) => setAttributes({ gradientFade: value })}
 						min={0}
-						max={10}
-						step={0.1}
+						max={1}
+						step={0.01}
 					/>
 					<ColorPickerControl
 						label={__('Canvas Background Color', 'hero-gradient')}
