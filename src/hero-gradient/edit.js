@@ -62,6 +62,20 @@ const SVG_PATTERN_OPTIONS = [
 	{ label: 'Radial', value: 'radial' },
 ];
 
+// Movement mode options
+const MOVEMENT_MODE_OPTIONS = [
+	{ label: 'Orbit', value: 'orbit' },
+	{ label: 'Wave', value: 'wave' },
+	{ label: 'Pulse', value: 'pulse' },
+	{ label: 'Drift', value: 'drift' },
+	{ label: 'Bounce', value: 'bounce' },
+	{ label: 'Spiral', value: 'spiral' },
+	{ label: 'Sway', value: 'sway' },
+	{ label: 'Chaos', value: 'chaos' },
+	{ label: 'Figure Eight', value: 'figure-eight' },
+	{ label: 'Vertical Wave', value: 'vertical-wave' },
+];
+
 // Color picker component with popover
 function ColorPickerControl({ label, color, onChange }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -154,6 +168,10 @@ export default function Edit({ attributes, setAttributes }) {
 		lineGradientAngle,
 		lineGradientLength,
 		lineGradientWidth,
+		// Movement settings
+		movementMode,
+		amplitudeX,
+		amplitudeY,
 		// SVG overlay
 		svgEnabled,
 		svgOpacity,
@@ -232,6 +250,9 @@ export default function Edit({ attributes, setAttributes }) {
 			anim.updateSetting('lineGradientAngle', lineGradientAngle);
 			anim.updateSetting('lineGradientLength', lineGradientLength);
 			anim.updateSetting('lineGradientWidth', lineGradientWidth);
+			anim.updateSetting('movementMode', movementMode);
+			anim.updateSetting('amplitudeX', amplitudeX);
+			anim.updateSetting('amplitudeY', amplitudeY);
 		}
 	}, [
 		radialGradientsEnabled, gradientOpacity, gradientBlur, brightness, contrast, saturation,
@@ -241,6 +262,7 @@ export default function Edit({ attributes, setAttributes }) {
 		hueEnd, evenlySpacedColors, hueSeparation, saturationMin, saturationMax, lightnessMin,
 		lightnessMax, paletteColor1, paletteColor2, paletteColor3, paletteColor4, paletteColor5,
 		lineGradientsEnabled, lineGradientAngle, lineGradientLength, lineGradientWidth,
+		movementMode, amplitudeX, amplitudeY,
 	]);
 
 	// Update SVG overlay when settings change
@@ -424,7 +446,34 @@ export default function Edit({ attributes, setAttributes }) {
 					/>
 				</PanelBody>
 
-				{/* Gradient Colors Panel */}
+				{/* Movement Settings Panel */}
+				<PanelBody title={__('Movement Settings', 'hero-gradient')} initialOpen={false}>
+					<SelectControl
+						label={__('Movement Mode', 'hero-gradient')}
+						value={movementMode}
+						options={MOVEMENT_MODE_OPTIONS}
+						onChange={(value) => setAttributes({ movementMode: value })}
+						help={__('Select the animation pattern for gradient movement', 'hero-gradient')}
+					/>
+					<RangeControl
+						label={__('Amplitude X', 'hero-gradient')}
+						value={amplitudeX}
+						onChange={(value) => setAttributes({ amplitudeX: value })}
+						min={0}
+						max={50}
+						step={1}
+						help={__('Horizontal movement range (% of width)', 'hero-gradient')}
+					/>
+					<RangeControl
+						label={__('Amplitude Y', 'hero-gradient')}
+						value={amplitudeY}
+						onChange={(value) => setAttributes({ amplitudeY: value })}
+						min={0}
+						max={50}
+						step={1}
+						help={__('Vertical movement range (% of height)', 'hero-gradient')}
+					/>
+				</PanelBody>
 				<PanelBody title={__('Gradient Colors', 'hero-gradient')} initialOpen={false}>
 					<SelectControl
 						label={__('Color Palette Mode', 'hero-gradient')}

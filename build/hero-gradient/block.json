@@ -214,6 +214,18 @@
       "type": "number",
       "default": 100
     },
+    "movementMode": {
+      "type": "string",
+      "default": "orbit"
+    },
+    "amplitudeX": {
+      "type": "number",
+      "default": 10
+    },
+    "amplitudeY": {
+      "type": "number",
+      "default": 15
+    },
     "svgEnabled": {
       "type": "boolean",
       "default": true

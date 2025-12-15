@@ -53,6 +53,13 @@ export class GradientAnimation {
             lineGradientAngle: 0,
             lineGradientLength: 200,
             lineGradientWidth: 100,
+            // Movement settings
+            movementMode: 'orbit',
+            amplitudeX: 10,
+            amplitudeY: 15,
+            // Canvas size constraints (0 = no limit)
+            maxWidth: 0,
+            maxHeight: 0,
         };
 
         // Fadeout tracking
@@ -71,10 +78,18 @@ export class GradientAnimation {
     }
 
     resize() {
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const rect = this.canvas.parentElement?.getBoundingClientRect() || { width: 800, height: 600 };
-        const width = rect.width || 800;
-        const height = rect.height || 600;
+        let width = rect.width || 800;
+        let height = rect.height || 600;
+
+        // Apply max constraints if set
+        if (this.settings.maxWidth > 0 && width > this.settings.maxWidth) {
+            width = this.settings.maxWidth;
+        }
+        if (this.settings.maxHeight > 0 && height > this.settings.maxHeight) {
+            height = this.settings.maxHeight;
+        }
 
         this.canvas.width = width * dpr;
         this.canvas.height = height * dpr;
@@ -83,23 +98,66 @@ export class GradientAnimation {
         this.canvas.style.height = height + 'px';
     }
 
-    createGradients() {
-        this.gradients = [];
+    /**
+     * Create or update gradients while preserving animation state
+     * @param {boolean} forceRecreate - If true, regenerate all random seeds (used when gradient count changes)
+     */
+    createGradients(forceRecreate = true) {
         const count = this.settings.gradientCount;
-
         const baseRadiusMultiplier = this.settings.gradientSizeMode === 'base' ? this.settings.gradientSizeMultiplier : 1.0;
 
-        for (let i = 0; i < count; i++) {
-            this.gradients.push({
-                x: Math.random() * this.canvas.width,
-                y: Math.random() * this.canvas.height,
-                radius: (200 + Math.random() * 400) * baseRadiusMultiplier,
-                vx: (Math.random() - 0.5) * 0.5,
-                vy: (Math.random() - 0.5) * 0.5,
-                color: this.generateColor(i),
-                opacity: 0.3 + Math.random() * 0.4,
-                phase: Math.random() * Math.PI * 2,
-                baseIndex: i,
+        // If we need to recreate or don't have gradients yet, generate new seeds
+        if (forceRecreate || this.gradients.length === 0) {
+            // Store the previous gradient seeds if they exist (for partial preservation)
+            const previousSeeds = this.gradients.map(g => ({
+                phase: g.phase,
+                opacityBase: g.opacityBase,
+                radiusFactor: g.radiusFactor,
+                velocityX: g.velocityX,
+                velocityY: g.velocityY,
+                initialX: g.initialX,
+                initialY: g.initialY,
+            }));
+
+            this.gradients = [];
+
+            for (let i = 0; i < count; i++) {
+                // Reuse previous seeds if available (for when count changes but we want some stability)
+                const previousSeed = previousSeeds[i];
+                const seed = previousSeed || {
+                    phase: Math.random() * Math.PI * 2,
+                    opacityBase: 0.3 + Math.random() * 0.4,
+                    radiusFactor: 200 + Math.random() * 400,
+                    velocityX: (Math.random() - 0.5) * 0.5,
+                    velocityY: (Math.random() - 0.5) * 0.5,
+                    initialX: Math.random(),
+                    initialY: Math.random(),
+                };
+
+                this.gradients.push({
+                    x: seed.initialX * this.canvas.width,
+                    y: seed.initialY * this.canvas.height,
+                    radius: seed.radiusFactor * baseRadiusMultiplier,
+                    vx: seed.velocityX,
+                    vy: seed.velocityY,
+                    color: this.generateColor(i),
+                    opacity: seed.opacityBase,
+                    phase: seed.phase,
+                    baseIndex: i,
+                    // Store seeds for future preservation
+                    opacityBase: seed.opacityBase,
+                    radiusFactor: seed.radiusFactor,
+                    velocityX: seed.velocityX,
+                    velocityY: seed.velocityY,
+                    initialX: seed.initialX,
+                    initialY: seed.initialY,
+                });
+            }
+        } else {
+            // Just update existing gradients without changing random seeds
+            this.gradients.forEach((gradient, i) => {
+                gradient.radius = gradient.radiusFactor * baseRadiusMultiplier;
+                gradient.color = this.generateColor(i);
             });
         }
     }
@@ -126,8 +184,105 @@ export class GradientAnimation {
         }
     }
 
+    /**
+     * Calculate position offset based on movement mode
+     * @param {Object} gradient - The gradient object with phase and baseIndex
+     * @param {number} index - Index of the gradient
+     * @param {number} time - Current animation time
+     * @param {number} width - Canvas width
+     * @param {number} height - Canvas height
+     * @returns {{offsetX: number, offsetY: number}} Position offsets
+     */
+    calculateMovementPosition(gradient, index, time, width, height) {
+        const speed = this.settings.gradientSpeed;
+        const ampX = this.settings.amplitudeX / 100;
+        const ampY = this.settings.amplitudeY / 100;
+        const phase = gradient.phase;
+        const t = time * speed;
+
+        let offsetX = 0;
+        let offsetY = 0;
+
+        switch (this.settings.movementMode) {
+            case 'orbit':
+            default:
+                // Elliptical orbit pattern (original behavior)
+                offsetX = Math.sin(t + phase) * width * ampX;
+                offsetY = Math.cos(t + phase * 1.3) * height * ampY;
+                break;
+
+            case 'wave':
+                // Horizontal wave with vertical oscillation
+                offsetX = Math.sin(t + phase) * width * ampX;
+                offsetY = Math.sin(t * 2 + phase + index * 0.5) * height * ampY * 0.5;
+                break;
+
+            case 'pulse':
+                // Radial expansion/contraction from center
+                const pulsePhase = t + phase;
+                const pulseRadius = (Math.sin(pulsePhase) * 0.5 + 0.5);
+                const pulseAngle = phase * Math.PI * 2;
+                offsetX = Math.cos(pulseAngle) * pulseRadius * width * ampX;
+                offsetY = Math.sin(pulseAngle) * pulseRadius * height * ampY;
+                break;
+
+            case 'drift':
+                // Slow random wandering with smooth transitions using multiple sine waves
+                offsetX = (Math.sin(t * 0.7 + phase) * 0.5 + Math.sin(t * 0.3 + phase * 2) * 0.3 + Math.sin(t * 0.1 + phase * 3) * 0.2) * width * ampX;
+                offsetY = (Math.cos(t * 0.5 + phase) * 0.5 + Math.cos(t * 0.2 + phase * 2.5) * 0.3 + Math.cos(t * 0.15 + phase * 1.5) * 0.2) * height * ampY;
+                break;
+
+            case 'bounce':
+                // Bounce-style movement (absolute sine for bounce effect)
+                const bounceX = Math.abs(Math.sin(t + phase));
+                const bounceY = Math.abs(Math.sin(t * 1.3 + phase * 0.7));
+                offsetX = (bounceX * 2 - 1) * width * ampX;
+                offsetY = (bounceY * 2 - 1) * height * ampY;
+                break;
+
+            case 'spiral':
+                // Outward/inward spiral pattern
+                const spiralT = t + phase;
+                const spiralRadius = (Math.sin(spiralT * 0.5) * 0.5 + 0.5);
+                const spiralAngle = spiralT * 2;
+                offsetX = Math.cos(spiralAngle) * spiralRadius * width * ampX;
+                offsetY = Math.sin(spiralAngle) * spiralRadius * height * ampY;
+                break;
+
+            case 'sway':
+                // Gentle horizontal pendulum motion with subtle vertical
+                offsetX = Math.sin(t + phase) * width * ampX;
+                offsetY = Math.sin(t * 0.5 + phase) * height * ampY * 0.3;
+                break;
+
+            case 'chaos':
+                // Multi-frequency noise-based movement
+                const chaos1 = Math.sin(t * 1.1 + phase) * Math.cos(t * 0.7 + phase * 1.3);
+                const chaos2 = Math.sin(t * 0.8 + phase * 2) * Math.cos(t * 1.5 + phase);
+                const chaos3 = Math.sin(t * 2.1 + phase * 0.5);
+                offsetX = (chaos1 * 0.5 + chaos2 * 0.3 + chaos3 * 0.2) * width * ampX;
+                offsetY = (chaos2 * 0.5 + chaos3 * 0.3 + chaos1 * 0.2) * height * ampY;
+                break;
+
+            case 'figure-eight':
+                // Infinity/lemniscate pattern
+                const figureT = t + phase;
+                offsetX = Math.sin(figureT) * width * ampX;
+                offsetY = Math.sin(figureT * 2) * height * ampY * 0.5;
+                break;
+
+            case 'vertical-wave':
+                // Vertical wave with horizontal oscillation
+                offsetX = Math.sin(t * 2 + phase + index * 0.5) * width * ampX * 0.5;
+                offsetY = Math.sin(t + phase) * height * ampY;
+                break;
+        }
+
+        return { offsetX, offsetY };
+    }
+
     updateGradients() {
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const width = this.canvas.width / dpr;
         const height = this.canvas.height / dpr;
 
@@ -135,11 +290,10 @@ export class GradientAnimation {
         const centerY = height * this.settings.positionY;
 
         this.gradients.forEach((gradient, i) => {
-            const baseX = centerX + Math.sin(this.time * this.settings.gradientSpeed + gradient.phase) * width * 0.1;
-            const baseY = centerY + Math.cos(this.time * this.settings.gradientSpeed + gradient.phase * 1.3) * height * 0.15;
-
-            gradient.x = baseX;
-            gradient.y = baseY;
+            // Use the movement mode calculation
+            const { offsetX, offsetY } = this.calculateMovementPosition(gradient, i, this.time, width, height);
+            gradient.x = centerX + offsetX;
+            gradient.y = centerY + offsetY;
 
             if (this.settings.colorMode === 'palette' && this.settings.paletteColors.length > 0) {
                 const paletteIndex = gradient.baseIndex % this.settings.paletteColors.length;
@@ -259,7 +413,7 @@ export class GradientAnimation {
     }
 
     draw() {
-        const dpr = window.devicePixelRatio || 1;
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const width = this.canvas.width / dpr;
         const height = this.canvas.height / dpr;
 
@@ -424,16 +578,24 @@ export class GradientAnimation {
     }
 
     updateSetting(key, value) {
+        const oldValue = this.settings[key];
         this.settings[key] = value;
+
         if (key === 'gradientCount') {
-            this.createGradients();
+            // Only force recreate if the count actually changed
+            if (oldValue !== value) {
+                this.createGradients(true);
+            }
         } else if (key === 'colorMode' || key === 'paletteColors') {
-            this.createGradients();
+            // Update colors without recreating gradient positions
+            this.createGradients(false);
         } else if (key === 'hueSeparation' || key === 'evenlySpacedColors') {
-            this.createGradients();
+            // Update colors without recreating gradient positions
+            this.createGradients(false);
         } else if (key === 'gradientSizeMultiplier' || key === 'gradientSizeMode') {
             if (key === 'gradientSizeMode' || (key === 'gradientSizeMultiplier' && this.settings.gradientSizeMode === 'base')) {
-                this.createGradients();
+                // Update radius without recreating gradient positions
+                this.createGradients(false);
             }
         } else if (key === 'fadeoutMode' || key === 'fadeoutTime') {
             this.fadeoutLastTime = Date.now();
@@ -441,6 +603,9 @@ export class GradientAnimation {
             if (value === 0) {
                 this.settings.animatedHue = 0;
             }
+        } else if (key === 'maxWidth' || key === 'maxHeight') {
+            // Apply new size constraints immediately
+            this.resize();
         }
     }
 

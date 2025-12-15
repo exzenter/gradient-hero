@@ -217,6 +217,18 @@ return array(
 				'type' => 'number',
 				'default' => 100
 			),
+			'movementMode' => array(
+				'type' => 'string',
+				'default' => 'orbit'
+			),
+			'amplitudeX' => array(
+				'type' => 'number',
+				'default' => 10
+			),
+			'amplitudeY' => array(
+				'type' => 'number',
+				'default' => 15
+			),
 			'svgEnabled' => array(
 				'type' => 'boolean',
 				'default' => true

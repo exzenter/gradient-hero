@@ -146,6 +146,9 @@ function initExtendedBlocks() {
             lineGradientAngle: settings.heroLineGradientAngle,
             lineGradientLength: settings.heroLineGradientLength,
             lineGradientWidth: settings.heroLineGradientWidth,
+            movementMode: settings.heroMovementMode,
+            amplitudeX: settings.heroAmplitudeX,
+            amplitudeY: settings.heroAmplitudeY,
             svgEnabled: settings.heroSvgEnabled,
             svgOpacity: settings.heroSvgOpacity,
             svgSize: settings.heroSvgSize,
@@ -203,6 +206,9 @@ function applyGradientSettings(animation, settings) {
     if (settings.lineGradientAngle !== undefined) animation.updateSetting('lineGradientAngle', settings.lineGradientAngle);
     if (settings.lineGradientLength !== undefined) animation.updateSetting('lineGradientLength', settings.lineGradientLength);
     if (settings.lineGradientWidth !== undefined) animation.updateSetting('lineGradientWidth', settings.lineGradientWidth);
+    if (settings.movementMode !== undefined) animation.updateSetting('movementMode', settings.movementMode);
+    if (settings.amplitudeX !== undefined) animation.updateSetting('amplitudeX', settings.amplitudeX);
+    if (settings.amplitudeY !== undefined) animation.updateSetting('amplitudeY', settings.amplitudeY);
 
     // Handle palette colors
     if (settings.paletteColor1 !== undefined) {
