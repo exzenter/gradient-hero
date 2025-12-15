@@ -280,6 +280,36 @@ anim.updateSetting('hueRotationSpeed', 0.1); // Slow rainbow effect
 
 ---
 
+### Playback Control
+
+Pause and resume the animation loop to save CPU/GPU resources.
+
+| Method | Returns | Description |
+|--------|---------|-------------|
+| `pause()` | void | Stop animation loop completely (0% CPU) |
+| `resume()` | void | Restart animation loop |
+| `isPaused()` | boolean | Check if animation is paused |
+
+```javascript
+// Pause animation (0% CPU usage)
+anim.pause();
+
+// Resume animation
+anim.resume();
+
+// Check state
+if (anim.isPaused()) {
+    console.log('Animation is paused');
+}
+
+// Toggle pause/resume
+anim.isPaused() ? anim.resume() : anim.pause();
+```
+
+> **Performance Tip:** Use `pause()` when the gradient is off-screen or hidden to eliminate all CPU usage from the animation.
+
+---
+
 ## Example Presets
 
 ### Neon Glow

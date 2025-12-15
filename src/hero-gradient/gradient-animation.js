@@ -609,6 +609,35 @@ export class GradientAnimation {
         }
     }
 
+    /**
+     * Pause the animation loop completely (0% CPU usage)
+     */
+    pause() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+            this.animationId = null;
+        }
+        this._paused = true;
+    }
+
+    /**
+     * Resume the animation loop after pause
+     */
+    resume() {
+        if (this._paused && !this.animationId) {
+            this._paused = false;
+            this.animate();
+        }
+    }
+
+    /**
+     * Check if animation is paused
+     * @returns {boolean}
+     */
+    isPaused() {
+        return this._paused === true;
+    }
+
     destroy() {
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
