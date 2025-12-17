@@ -440,14 +440,17 @@ export class GradientAnimation {
 
         console.log(`[Canvas Masking] Found ${elementsToExclude.length} elements to mask`);
 
+        // 1px offset to shrink the masking box slightly on each side
+        const maskOffset = 1;
+
         elementsToExclude.forEach((el, index) => {
             const rect = el.getBoundingClientRect();
 
-            // Calculate relative position to canvas
-            const x = rect.left - canvasRect.left;
-            const y = rect.top - canvasRect.top;
-            const width = rect.width;
-            const height = rect.height;
+            // Calculate relative position to canvas with 1px inset
+            const x = rect.left - canvasRect.left + maskOffset;
+            const y = rect.top - canvasRect.top + maskOffset;
+            const width = rect.width - (maskOffset * 2);
+            const height = rect.height - (maskOffset * 2);
 
             // Check for .still-blend children that should NOT be masked
             const stillBlendChildren = el.querySelectorAll('.still-blend');
