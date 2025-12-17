@@ -7,6 +7,7 @@ Beautiful animated gradient backgrounds for your WordPress blocks with full cust
 - 🎨 Animated gradient backgrounds with customizable colors
 - ⚡ Configurable animation speed and direction
 - 🎭 10 movement modes (Orbit, Wave, Pulse, Drift, Bounce, Spiral, Sway, Chaos, Figure Eight, Vertical Wave)
+- 🖼️ Canvas masking with `.no-blend` and `.still-blend` classes for selective blend exclusion
 - 📐 SVG grid overlay patterns
 - 🧩 Full block editor integration
 - 📦 Nested content support (add any blocks inside)

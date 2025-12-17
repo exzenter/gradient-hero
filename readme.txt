@@ -2,7 +2,7 @@
 Contributors:      exzentde
 Tags:              gradient, animation, background, hero, block
 Tested up to:      6.9
-Stable tag:        0.1.2
+Stable tag:        0.1.4
 License:           GPL-2.0-or-later
 License URI:       https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -16,6 +16,8 @@ Beautiful animated gradient backgrounds for your WordPress blocks with full cust
 
 * Animated gradient backgrounds with customizable colors
 * Configurable animation speed and direction
+* 10 movement modes (Orbit, Wave, Pulse, Drift, Bounce, Spiral, Sway, Chaos, Figure Eight, Vertical Wave)
+* Canvas masking with .no-blend and .still-blend classes for selective blend exclusion
 * SVG grid overlay patterns
 * Full block editor integration
 * Nested content support (add any blocks inside)
@@ -52,6 +54,12 @@ Yes, animation speed, colors, and direction are all customizable through the blo
 3. Block settings panel
 
 == Changelog ==
+
+= 0.1.4 =
+* Added canvas masking feature with .no-blend class for selective blend exclusion
+* Added .still-blend class to create cut-outs in masked regions
+* Added frontend UI toggle for canvas masking
+* Added comprehensive console debug logging for masking
 
 = 0.1.2 =
 * Removed Gradient Opacity option from Canvas Gradient Settings

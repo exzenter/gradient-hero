@@ -6,6 +6,8 @@
 // Import the animation classes
 import { GradientAnimation } from './gradient-animation';
 import { SVGPatternGenerator } from './svg-patterns';
+import './canvas-masking-ui';
+
 
 /**
  * Initialize all Hero Gradient blocks on the page

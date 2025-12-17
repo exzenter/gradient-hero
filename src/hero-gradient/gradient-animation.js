@@ -5,7 +5,10 @@
 export class GradientAnimation {
     constructor(canvas) {
         this.canvas = canvas;
-        this.ctx = canvas.getContext('2d');
+        this.ctx = canvas.getContext('2d', {
+            alpha: false,           // Tells browser canvas is opaque - better compositing
+            willReadFrequently: false  // Optimization hint
+        });
         this.animationId = null;
 
         // Animation properties
@@ -60,6 +63,10 @@ export class GradientAnimation {
             // Canvas size constraints (0 = no limit)
             maxWidth: 0,
             maxHeight: 0,
+            // Canvas masking settings
+            canvasMaskingEnabled: true,
+            canvasMaskingSelector: '.no-blend',
+            canvasMaskingColor: 'white', // 'white' for multiply, 'black' for screen, 'gray' for overlay
         };
 
         // Fadeout tracking
@@ -412,6 +419,89 @@ export class GradientAnimation {
         }
     }
 
+    /**
+     * Update canvas masking by drawing neutral colors over excluded elements
+     * Supports .still-blend class to create cut-outs in masked regions
+     * @param {CanvasRenderingContext2D} ctx - The canvas context to draw on
+     */
+    updateCanvasMasking(ctx) {
+        if (!this.settings.canvasMaskingEnabled) {
+            return;
+        }
+
+        const elementsToExclude = document.querySelectorAll(this.settings.canvasMaskingSelector);
+
+        if (elementsToExclude.length === 0) {
+            return;
+        }
+
+        const canvasRect = this.canvas.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+
+        console.log(`[Canvas Masking] Found ${elementsToExclude.length} elements to mask`);
+
+        elementsToExclude.forEach((el, index) => {
+            const rect = el.getBoundingClientRect();
+
+            // Calculate relative position to canvas
+            const x = rect.left - canvasRect.left;
+            const y = rect.top - canvasRect.top;
+            const width = rect.width;
+            const height = rect.height;
+
+            // Check for .still-blend children that should NOT be masked
+            const stillBlendChildren = el.querySelectorAll('.still-blend');
+
+            console.log(`[Canvas Masking] Element ${index + 1}:`, {
+                selector: this.settings.canvasMaskingSelector,
+                x: x.toFixed(2),
+                y: y.toFixed(2),
+                width: width.toFixed(2),
+                height: height.toFixed(2),
+                color: this.settings.canvasMaskingColor,
+                stillBlendChildren: stillBlendChildren.length
+            });
+
+            if (stillBlendChildren.length === 0) {
+                // No .still-blend children, mask the entire element
+                ctx.fillStyle = this.settings.canvasMaskingColor;
+                ctx.fillRect(x, y, width, height);
+            } else {
+                // Use clipping to create cut-outs for .still-blend children
+                ctx.save();
+
+                // Start a new path for the masking region
+                ctx.beginPath();
+                ctx.rect(x, y, width, height);
+
+                // Subtract .still-blend children rectangles from the mask
+                stillBlendChildren.forEach((child, childIndex) => {
+                    const childRect = child.getBoundingClientRect();
+                    const childX = childRect.left - canvasRect.left;
+                    const childY = childRect.top - canvasRect.top;
+                    const childWidth = childRect.width;
+                    const childHeight = childRect.height;
+
+                    console.log(`[Canvas Masking]   → .still-blend child ${childIndex + 1}:`, {
+                        x: childX.toFixed(2),
+                        y: childY.toFixed(2),
+                        width: childWidth.toFixed(2),
+                        height: childHeight.toFixed(2)
+                    });
+
+                    // Create a reverse winding path to subtract this region
+                    ctx.rect(childX + childWidth, childY, -childWidth, childHeight);
+                });
+
+                // Fill the clipped region
+                ctx.fillStyle = this.settings.canvasMaskingColor;
+                ctx.fill('evenodd');
+
+                ctx.restore();
+            }
+        });
+    }
+
     draw() {
         const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
         const width = this.canvas.width / dpr;
@@ -550,6 +640,9 @@ export class GradientAnimation {
         }
 
         this.applyFilters();
+
+        // Apply canvas masking after all gradients are drawn
+        this.updateCanvasMasking(this.ctx);
     }
 
     applyFilters() {
@@ -606,6 +699,9 @@ export class GradientAnimation {
         } else if (key === 'maxWidth' || key === 'maxHeight') {
             // Apply new size constraints immediately
             this.resize();
+        } else if (key === 'canvasMaskingEnabled' || key === 'canvasMaskingSelector' || key === 'canvasMaskingColor') {
+            // Canvas masking settings are applied in real-time during draw
+            console.log(`[Canvas Masking] Setting updated: ${key} = ${value}`);
         }
     }
 
